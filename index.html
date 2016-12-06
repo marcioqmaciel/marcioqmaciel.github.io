@@ -27,47 +27,80 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
+        
         <h3>
 <a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Jekyll no Bash no Ubuntu no Windows!</h3>
 
-<p> Há várias formas de se usar Linux e Windows, cada uma com vantagens e desvantagens, como vários PCs na rede, dual boot, VM, docker e agora o <a href="https://msdn.microsoft.com/en-us/commandline/wsl/faq" target="_blank">Bash On Windows</a>. O Bash On Windows é uma forma conveniente para desenvolvedores Windows usarem a shell do Linux diretamente no Windows, mas não se esqueça de que ainda está em versão beta com limitações e problemas.</p>
+<p> Há várias formas de se usar Linux e Windows, cada uma com vantagens e desvantagens, como vários PCs na rede, Live CD/pendrive, dual boot, VM, docker e agora o <a href="https://msdn.microsoft.com/en-us/commandline/wsl/faq" target="_blank">Bash On Windows</a>. O Bash On Windows é uma forma conveniente para desenvolvedores Windows usarem a shell do Linux diretamente no Windows, mas não se esqueça de que ainda está em versão beta com limitações e problemas.</p>
+        
         <p>O nosso objetivo com esse tutorial é executar o <a href="https://jekyllrb.com" target="_blank">Jekyll</a>, um web server de arquivos estáticos, feito em Ruby, ideal para criar blogs leves sem a necessidade de usar bases de dados. O GitHub oferece a hospedagem gratuita de web sites estáticos e o Jekyll é o serviço por trás dessa hospedagem. Neste tutorial estou supondo que você é usuário do Windows que queira aproveitar algumas funcionalidades exclusivas do Linux ou que sejam de instalação complicada diretamente no Windows.</p>
 
 <h3>
 <a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Instalando o Linux no Windows</h3>
 
 <p>Se você já instalou o bash no Windows, pode pular para a próxima etapa. Caso ainda não tenha instalado, deve primeiro preparar seu Windows para receber o bash. Para que possa comparar, estou executando o <strong>Windows 10 Insiders Preview build 14971</strong>.</p>
+        
         <p>Primeiro, vá em <em>Configurações > Atualização e Segurança > Para desenvolvedores</em> e marque a opção <strong>Modo de desenvolvedor</strong>. Agora, digite <em>ativar</em> na Cortana e selecione <em>Ativar ou desativar recursos do Windows</em>. Na janela que se abre selecione <em>Subsistema do Windows para Linux (Beta)</em>. O Windows fará a instalação e reiniciará o PC.</p>
-        <p>Após reiniciar, abra uma janela do PowerShell como administrador (<em>clique com o botão direito no logo do Windows, na build 14971 a opção de prompt de Command foi substituída por PowerShell</em>). No PowerShell execute o comando <code>lxrun /install</code>. Neste momento o Windows irá baixar (tenha paciência, o processo é demorado) uma imagem da distro <strong>Ubuntu 16.04.1 LTS</strong> e a instalará dentro do WSL - Windows Subsystem for Linux. Sim, sem a necessidade de uma pesada VM, você estará instalando e <strong>executando uma distro do Linux dentro do Windows 10</strong>!</p>
-        <p>Durante a instalação o PowerShell perguntará pelo nome de usuário e senha que serão usados internamente pela distro. Ao término da instalação, feche o PowerShell e abra o <em>Bash no Ubuntu no Windows</em> no modo administrador, clicando no atalho criado no menu Iniciar.</p>
+        
+        <p>Após reiniciar, execute o comando <code>bash</code> na Cortana. O Windows irá baixar uma imagem da distro <strong>Ubuntu 16.04.1 LTS</strong> e a instalará dentro do WSL - Windows Subsystem for Linux. Sim, sem a necessidade de uma pesada VM, você estará instalando e <strong>executando uma distro do Linux dentro do Windows 10</strong>!</p>
+        
+        <p>Durante a instalação você será perguntando sobre uma senha de administrador (usuário root no Linus) que será usada internamente na distro. Ao término da instalação, feche a janela do bash e novamente digite bash na Cortana. Observe que agora o comando bash se tornou o aplicativo desktop <em>Bash no Ubuntu no Windows</em>.</p>
 
 <h3>
 <a id="creating-pages-manually" class="anchor" href="#creating-pages-manually" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Preparando o Linux</h3>
 
 <p>Com o Linux instalado no Windows, vamos atualizá-lo e prepará-lo para o Jekyll. Não se preocupe se você não está familiarizado com os comandos a seguir. Se precisar pesquisar mais informações pela internet, lembre-se de que a distro instalada é a Ubuntu, então os comandos do bash seguem o padrão dessa distro.</p>
-        <p>A primeira coisa a fazer é atualizar o Linux, digitando <code>sudo apt update</code>. O bash irá lhe pedir a senha de usuário criada na instalação, pesquisará nos servidores da Canonical e atualizará a base do Ubuntu. Aguarde, o processo pode demorar vários minutos. Após essa primeira atualização, o bash pode lhe retornar que há mais atualizações secundárias disponíveis (no meu caso eram 85 pacotes!). Execute <code>sudo apt full-upgrade</code> para atualizar todos os pacotes, e novamente aguarde o processo de download e instalação. Após a atualização, se você quiser pode executar <code>apt list --upgradable</code> para ver se ainda resta algum pacote desatualizado.</p>
-        <p>O Linux está instalado e atualizado. Mas, por se tratar de uma imagem de distro mínima, você precisa instalar vários outros pacotes que não são instalados por padrão. Execute <code>sudo apt install make gcc</code> para instalar <em>Make</em> e <em>GCC</em>, componentes responsáveis por compilar programas. O Jekyll foi feito em Ruby, então precisamos instalá-lo também, executando <code>sudo apt install ruby</code>.</p>
-        <p>Atenção: após a instalação do Ruby, precisamos instalar arquivos complementares do Ruby, mas de acordo com a versão instalada. Primeiro, verifique a versão do Ruby executando <code>ruby -v</code>. Se o Ruby não estiver instalado corretamente e acusar falta de arquivos, execute <code>sudo apt-get -f install</code> para corrigir as dependências. Depois que você obter o número da versão instalada (2.3 aqui no meu PC), instale os arquivos complementares, usando o número da versão obtida no comando a seguir, exemplo: <code>sudo apt-get install ruby2.3-dev</code>.</p>
+        
+        <p>A primeira coisa a fazer é atualizar o Linux, digitando <code>sudo apt update</code>. O bash irá lhe pedir a senha de usuário criada na instalação, pesquisará nos servidores da Canonical e atualizará a base do Ubuntu. Após essa primeira atualização, o bash pode lhe avisar que há mais atualizações secundárias disponíveis (no meu caso eram 85 pacotes!). Execute <code>sudo apt full-upgrade</code> para atualizar todos os pacotes, e novamente aguarde o processo de download e instalação. Após a atualização, se você quiser pode executar <code>apt list --upgradable</code> para ver se ainda resta algum pacote desatualizado, ou execute <code>sudo apt -f install</code> para corrigir as últimas dependências.</p>
+        
+        <p>O Linux agora está instalado e atualizado. Mas, por se tratar de uma imagem de distro mínima, você precisa instalar vários outros pacotes que não são instalados por padrão. Execute <code>sudo apt install make gcc</code> para instalar <em>Make</em> e <em>GCC</em>, pacotes responsáveis por compilar programas. O Jekyll foi feito em Ruby, então precisaremos instalá-lo também, executando <code>sudo apt install ruby</code>.</p>
+        
+        <p>Atenção: após a instalação do Ruby, precisamos instalar arquivos complementares do Ruby, mas de acordo com a versão já instalada. Primeiro, verifique a versão do Ruby executando <code>ruby -v</code>. Depois que você obter o número da versão instalada (2.3 aqui no meu PC), instale os arquivos complementares informando o número da versão, exemplo: <code>sudo apt install ruby2.3-dev</code>.</p>
 
 <h3>
 <a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Preparando o Jekyll</h3>
 
-<p>Ufa, estamos quase lá. Já temos o Linux instalado e atualizado, as bibliotecas de programação Make, GCC e Ruby também estão instaladas. Agora, falta instalarmos o Jekyll em si. Até agora temos usado o comando <code>apt</code> para baixar e instalar os pacotes necessários, mas apartir de agora usaremos o comando <code>gem</code> do Ruby. Execute <code>sudo gem install jekyll bundler</code>, aguarde o Ruby baixar o Jekyll e o Bundler e compilar.</p>
-        <p>Observe o seu prompt, deve se parecer com algo como <em>username@nomedopc:~$</em>. Se você me acompanhou até aqui, então você está na raiz do "hd" do Linux. Vamos mudar para outra pasta, <strong>MAS NÓS ESTAMOS DENTRO DO WINDOWS</strong>, então mudaremos para uma pasta visível tanto pelo Linux quanto pelo Windows Explorer! Execute <code>cd /mnt/c</code>. Seu prompt deve ter mudado para algo como <em>username@nomedopc:/mnt/c$</em>. Agora, execute <code>ls</code> e veja o Linux listar os arquivos na raiz do seu HD C:. Todas as unidades em NTFS do seu Windows 10 o Linux reconhecerá e a colocará dentro da pasta "/mnt", então você pode acessar esses HDs e partições nos dois sistemas. Ao invés de mudar para a raiz do C:, poderíamos ter executado <code>cd /mnt/c/Users/username/Documents</code> por exemplo, para irmos para a pasta de documentos do usuário no Windows. Não esqueça que o Linux diferencia maiúsculas de minúsculas nos nomes de arquivos e pastas, ok?</p>
-        <p>Iremos criar uma pasta na raiz do C: para criarmos vários testes de bash no Windows, como o blog de testes do Jekyll, mas você pode criar onde achar melhor, como no desktop do seu usuário Windows por exemplo. Execute <code>mkdir testesBashOnWindows &amp;&amp; cd testesBashOnWindows</code> para criar e entrar na pasta <em>C:\testesBashOnWindows</em>. É importante que você esteja dentro da pasta ANTES de executar o Jekyll. Observe que seu prompt agora indica <em>username@nomedopc:/mnt/c/testesBashOnWindows$</em>.</p>
-        <p>Execute <code>jekyll new meuBlogJekyll</code> e aguarde o Jekyll criar a subpasta meuBlogJekyll, criar arquivos dentro das pastas e inicializar o processo do servidor. Enquanto o Jekyll trabalha você pode acompanhar as alterações nas pastas diretamente pelo Windows Explorer.</p>
-
+<p>Ufa, estamos quase lá. Já temos o Linux instalado e atualizado, as bibliotecas de programação Make, GCC e Ruby também estão instaladas. Agora, falta instalarmos o Jekyll em si. Até agora temos usado o comando <code>apt</code> para baixar e instalar os pacotes necessários, mas agora usaremos o comando <code>gem</code> do Ruby. Execute <code>sudo gem install jekyll bundler</code>, aguarde o Ruby baixar o Jekyll, o Bundler e os compilar.</p>
+        
+        <p>Observe o seu prompt, deve se parecer com algo como <em>username@nomedopc:~$</em>. Se você me acompanhou até aqui, então você está na raiz do "hd" do Linux. Vamos mudar para outra pasta, <strong>MAS NÓS ESTAMOS DENTRO DO WINDOWS</strong>, então mudaremos para uma pasta visível tanto pelo Linux quanto pelo Windows Explorer! Execute <code>cd /mnt/c</code>. Seu prompt deve ter mudado para algo como <em>username@nomedopc:/mnt/c$</em>. Agora, execute <code>ls</code> e veja o Linux listar os arquivos e pastas na raiz da sua unidade C:. O Linux reconhecerá e colocará dentro da pasta "/mnt" todas as unidades em NTFS do seu Windows 10, então você pode acessar essas unidades nos dois sistemas. Ao invés de mudar para a raiz do C:, poderíamos ter executado <code>cd /mnt/c/Users/username/Documents</code> por exemplo, para irmos para a pasta de documentos do usuário no Windows. Não esqueça que o Linux diferencia maiúsculas de minúsculas nos nomes de arquivos e pastas, ok?</p>
+        
+        <p>Iremos criar uma pasta na raiz da unidade C: para criarmos vários testes de bash no Windows, como o blog de testes do Jekyll, mas você pode criar onde achar melhor, como no desktop do seu usuário Windows por exemplo. Execute <code>mkdir testesBashOnWindows &amp;&amp; cd testesBashOnWindows</code> para criar e entrar na pasta <em>C:\testesBashOnWindows</em>. É importante que você esteja dentro da pasta ANTES de executar o Jekyll. Observe que seu prompt agora indica algo como <em>username@nomedopc:/mnt/c/testesBashOnWindows$</em>.</p>
+        
+        <p>Execute <code>jekyll new meuBlogJekyll</code> e aguarde o Jekyll criar a subpasta meuBlogJekyll, criar arquivos dentro das pastas e inicializar o processo do servidor. Enquanto o Jekyll trabalha você pode acompanhar as alterações nas pastas diretamente pelo Windows Explorer. Ao finalizar, no terminal entre na pasta do blog com <code>cd meuBlogJekyll</code> e execute <code>bundle exec jekyll serve</code>.</p>
+        
+        <h3>
+<a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Jekyll no ar!</h3>
+        
+        <p>Pronto! Temos, direto do Windows 10, um web server Linux rodando e servindo arquivos estáticos. Deixe o terminal bash aberto, abra o Microsoft Edge, claro, navegue para o endereço <em>http://localhost:4000</em> e veja o resultado. Você pode clicar no título do post "Wellcome to Jekyll!" ou "About" que o servidor irá redirecioná-lo para o arquivo HTML correspondente.</p>
+        
+        <p>Volte para o terminal bash e tecle ctrl-c para parar o Jekyll. Agora atualize a página no navegador e terá uma mensagem de erro. Após o Jekyll estar instalado, basta executar <code>jekyll serve</code> para reativar o servidor. Veja as vantagens de todo o processo:</p>
+        
+          <ul>
+            <li>Não precisou instalar nada não-Windows no próprio Windows;</li>
+            <li>Os arquivos estão visíveis tanto para o Windows como para o Linux;</li>
+            <li>O bash é levíssimo, e você pode acompanhar quanto cada processo do Linux consome de RAM e CPU diretamente no Gerenciador de Tarefas (enquanto o Jekyll está rodando o Ruby2 ocupa 50mb de memória);</li>
+            <li>Nas próximas builds, com as melhorias e correções, será possível instalar ASPNetCore/SQLServer da mesma forma que instalamos o Jekyll;</li>
+            <li>Mesmo a Microsoft dizendo que o Bash On Windows é apenas um terminal destinado a desenvolvedores, já começaram a aparecer formas de executar os programas gráficos do Linux.</li>
+          </ul>
+        
+        <p>E quanto ao Jekyll em si? Será necessário outro artigo apenas para mostrá-lo na plenitude, mas, falando resumidamente, o Jekyll é um servidor web que fica monitorando pastas afim de criar dinamicamente os arquivos HTML finais. Então, a cada vez que o usuário alterar o conteúdo da pasta <strong>_posts</strong> (exemplo: incluir um novo artigo no blog) o Jekyll detectará essa alteração e criará um arquivo HTML completo na pasta <strong>_site</strong>, dentro da subpasta correspondente. Os arquivos dentro da pasta <strong>_site</strong> são os que compõem seu site/blog e são exibidos ao usuário. </p>
+        
+        <p>O Jekyll aceita plugins, temas, tem recursos embutidos como categorias, lida com inclusão automática de cabeçalho e rodapé, entre outros. Os textos dos artigos podem ser digitados no editor de sua preferência, tanto em HTML como em Markdown, que o Jekyll se encarrega de mesclar o cabeçalho e rodapé no arquivo HTML final e criar referências no índice de artigos. E o mais importante: ele está integrado ao GitHub Pages. O que significa que, após editar os artigos no seu PC, basta dar um GIT PUSH para que seu blog/site se atualize na hospedagem gratuita do GitHub.</p>
+        
 <h3>
-<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Support or Contact</h3>
+<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Porque instalar o Bash?</h3>
 
-<p>Having trouble with Pages? Check out our <a href="https://help.github.com/pages">documentation</a> or <a href="https://github.com/contact">contact support</a> and we’ll help you sort it out.</p>
+<p>Há inumeras vantagens de se usar o bash diretamente no Windows. Ele é mais leve que uma VM e mais flexível que um docker. Vários recursos interessantes aos desenvolvedores são nativamente desenvolvidos para Linux, e quem quer usá-los mas ainda continuar no Windows tem que encarar formas complexas de instalação, como <a href="https://jekyllrb.com/docs/windows/#installation" target="_blank">essa forma de instalar Jekyll no Windows</a>. E a qualquer momento você pode refazer do zero o seu Ubuntu, através dos comandos <code>lxrun /uninstall</code> e <code>lxrun /install</code> no PowerShell.</p>
+        
+        <p>Agora é aproveitar! Até a próxima.</p>
+        
       </section>
     </div>
 
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+        <p>Publicado com <a href="https://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
 
